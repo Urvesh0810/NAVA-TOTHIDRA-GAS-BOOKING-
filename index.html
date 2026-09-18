@@ -1,0 +1,1944 @@
+<!DOCTYPE html>
+<!-- GitHub-ready single-file version: 2026-09-18-v1 -->
+<html lang="gu">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>
+પ્રાથમિક શાળા નવા ટોઠીદરા - Smart LPG Gas Booking
+</title>
+
+
+<style>
+
+/* =====================================
+   BASIC
+===================================== */
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial,"Noto Sans Gujarati",sans-serif;
+    background:#eef3f8;
+    color:#222;
+}
+
+
+/* =====================================
+   CONTINUOUS RUNNING BAR
+===================================== */
+
+.top-bar{
+    width:100%;
+    height:50px;
+    background:linear-gradient(
+        90deg,
+        #0d47a1,
+        #1976d2,
+        #0d47a1
+    );
+    color:white;
+    overflow:hidden;
+    white-space:nowrap;
+    display:flex;
+    align-items:center;
+    box-shadow:0 2px 8px rgba(0,0,0,.25);
+}
+
+.running-text{
+    display:inline-block;
+    padding-left:100%;
+    animation:runningText 20s linear infinite;
+    font-size:19px;
+    font-weight:bold;
+}
+
+@keyframes runningText{
+
+    0%{
+        transform:translateX(0);
+    }
+
+    100%{
+        transform:translateX(-100%);
+    }
+
+}
+
+
+/* =====================================
+   LOGIN
+===================================== */
+
+.login-page{
+    min-height:calc(100vh - 50px);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.login-box{
+    width:100%;
+    max-width:430px;
+    background:white;
+    padding:30px;
+    border-radius:18px;
+    box-shadow:0 8px 30px rgba(0,0,0,.15);
+    text-align:center;
+}
+
+.login-box h1{
+    color:#0d47a1;
+    margin-bottom:8px;
+}
+
+.login-box p{
+    color:#555;
+}
+
+input,
+select{
+    width:100%;
+    padding:13px;
+    margin:7px 0;
+    border:1px solid #ccc;
+    border-radius:9px;
+    font-size:16px;
+    outline:none;
+}
+
+input:focus,
+select:focus{
+    border-color:#1976d2;
+}
+
+button{
+    border:0;
+    padding:12px 18px;
+    border-radius:9px;
+    cursor:pointer;
+    font-size:16px;
+    font-weight:bold;
+}
+
+.login-btn{
+    width:100%;
+    background:#1976d2;
+    color:white;
+    margin-top:8px;
+}
+
+.login-btn:hover{
+    background:#0d47a1;
+}
+
+
+/* =====================================
+   DASHBOARD
+===================================== */
+
+#dashboard{
+    display:none;
+}
+
+.header{
+    background:white;
+    padding:17px 22px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    box-shadow:0 2px 10px rgba(0,0,0,.12);
+    position:sticky;
+    top:0;
+    z-index:20;
+}
+
+.header h2{
+    margin:0;
+    color:#0d47a1;
+}
+
+.logout-btn{
+    background:#d32f2f;
+    color:white;
+}
+
+.container{
+    max-width:1100px;
+    margin:auto;
+    padding:20px;
+}
+
+
+/* =====================================
+   5 KG BLINKING GAS ALERT
+===================================== */
+
+.gas-alert{
+    background:#d50000;
+    color:white;
+    padding:17px;
+    margin-bottom:18px;
+    border-radius:13px;
+    text-align:center;
+    font-size:21px;
+    font-weight:bold;
+    box-shadow:0 4px 15px rgba(0,0,0,.25);
+
+    animation:gasBlink 1s infinite;
+}
+
+@keyframes gasBlink{
+
+    0%{
+        opacity:1;
+    }
+
+    50%{
+        opacity:.35;
+    }
+
+    100%{
+        opacity:1;
+    }
+
+}
+
+
+/* =====================================
+   INTERNET STATUS
+===================================== */
+
+.internet-status{
+    text-align:center;
+    padding:11px;
+    border-radius:9px;
+    margin-bottom:18px;
+    font-weight:bold;
+}
+
+.online{
+    background:#c8e6c9;
+    color:#1b5e20;
+}
+
+.offline{
+    background:#ffccbc;
+    color:#bf360c;
+}
+
+
+/* =====================================
+   CARDS
+===================================== */
+
+.card{
+    background:white;
+    border-radius:15px;
+    padding:20px;
+    margin-bottom:20px;
+    box-shadow:0 4px 15px rgba(0,0,0,.1);
+}
+
+.card h3{
+    margin-top:0;
+    color:#0d47a1;
+}
+
+
+/* =====================================
+   GAS STATUS
+===================================== */
+
+.gas-status{
+    display:grid;
+    grid-template-columns:
+        repeat(3,1fr);
+    gap:15px;
+}
+
+.status-box{
+    background:#f5f8ff;
+    padding:20px;
+    border-radius:12px;
+    text-align:center;
+    border:1px solid #dce5f5;
+}
+
+.status-box strong{
+    display:block;
+    font-size:25px;
+    color:#0d47a1;
+    margin-top:8px;
+}
+
+
+/* =====================================
+   AUTO BOOKING
+===================================== */
+
+.auto-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.switch{
+    width:60px;
+    height:30px;
+    background:#999;
+    border-radius:30px;
+    cursor:pointer;
+    position:relative;
+}
+
+.switch-circle{
+    width:24px;
+    height:24px;
+    background:white;
+    border-radius:50%;
+    position:absolute;
+    top:3px;
+    left:4px;
+    transition:.3s;
+}
+
+.switch.active{
+    background:#2e7d32;
+}
+
+.switch.active .switch-circle{
+    left:32px;
+}
+
+
+/* =====================================
+   BOOKING FORM
+===================================== */
+
+.booking-form{
+    max-width:700px;
+    margin:auto;
+}
+
+.selected-company{
+    display:none;
+    padding:13px;
+    margin-top:8px;
+    background:#eef5ff;
+    border-radius:10px;
+    text-align:center;
+    font-weight:bold;
+    color:#0d47a1;
+}
+
+.booking-button{
+    width:100%;
+    margin-top:10px;
+    color:white;
+    background:#1976d2;
+    transition:.2s;
+}
+
+.booking-button:hover{
+    opacity:.9;
+}
+
+.booking-message{
+    text-align:center;
+    font-weight:bold;
+    margin-top:12px;
+    min-height:22px;
+}
+
+
+/* =====================================
+   OFFLINE INFO
+===================================== */
+
+.offline-info{
+    background:#f3e5f5;
+    color:#6a1b9a;
+    padding:12px;
+    border-radius:9px;
+    margin-top:12px;
+    text-align:center;
+}
+
+
+/* =====================================
+   HISTORY
+===================================== */
+
+.history-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+}
+
+.live-title{
+    display:flex;
+    align-items:center;
+    gap:6px;
+}
+
+.live-dot{
+    width:11px;
+    height:11px;
+    background:#00c853;
+    border-radius:50%;
+    display:inline-block;
+    animation:liveBlink 1s infinite;
+}
+
+@keyframes liveBlink{
+
+    0%{
+        opacity:1;
+    }
+
+    50%{
+        opacity:.25;
+    }
+
+    100%{
+        opacity:1;
+    }
+
+}
+
+.clear-btn{
+    background:#757575;
+    color:white;
+    font-size:14px;
+}
+
+.history-table-wrapper{
+    overflow-x:auto;
+}
+
+.history-table{
+    width:100%;
+    min-width:900px;
+    border-collapse:collapse;
+    margin-top:15px;
+}
+
+.history-table th{
+    background:#0d47a1;
+    color:white;
+    padding:12px;
+}
+
+.history-table td{
+    padding:12px;
+    text-align:center;
+    border-bottom:1px solid #ddd;
+}
+
+.history-table tr:hover{
+    background:#f5f8ff;
+}
+
+.online-status{
+    color:#2e7d32;
+    font-weight:bold;
+}
+
+.offline-status{
+    color:#6a1b9a;
+    font-weight:bold;
+}
+
+.empty-history{
+    text-align:center;
+    color:#777;
+    padding:25px;
+}
+
+
+/* =====================================
+   NOTIFICATION
+===================================== */
+
+.notification{
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    max-width:350px;
+    background:#263238;
+    color:white;
+    padding:15px 20px;
+    border-radius:10px;
+    box-shadow:0 5px 20px rgba(0,0,0,.3);
+    display:none;
+    z-index:9999;
+}
+
+.notification.show{
+    display:block;
+}
+
+
+/* =====================================
+   RESPONSIVE
+===================================== */
+
+@media(max-width:700px){
+
+    .gas-status{
+        grid-template-columns:1fr;
+    }
+
+    .header{
+        flex-direction:column;
+        gap:10px;
+        text-align:center;
+    }
+
+    .gas-alert{
+        font-size:17px;
+    }
+
+    .running-text{
+        font-size:16px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================
+     RUNNING TOP BAR
+===================================== -->
+
+<div class="top-bar">
+
+    <div class="running-text">
+
+        🔥 SMART LPG GAS BOOKING SYSTEM
+        &nbsp;&nbsp; | &nbsp;&nbsp;
+        🏫 પ્રાથમિક શાળા નવા ટોઠીદરા
+        &nbsp;&nbsp; | &nbsp;&nbsp;
+        ⚠️ 5 KG GAS બાકી
+        &nbsp;&nbsp; | &nbsp;&nbsp;
+        🚚 GAS BOOKING AVAILABLE
+        &nbsp;&nbsp; | &nbsp;&nbsp;
+        🟢 LIVE BOOKING HISTORY
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================
+     LOGIN SCREEN
+===================================== -->
+
+<div
+    class="login-page"
+    id="loginPage"
+>
+
+    <div class="login-box">
+
+        <h1>
+            🏫 પ્રાથમિક શાળા નવા ટોઠીદરા
+        </h1>
+
+        <p>
+            Smart LPG Gas Booking System
+        </p>
+
+
+        <input
+            type="tel"
+            id="mobile"
+            placeholder="10 અંકનો Mobile Number"
+            maxlength="10"
+            inputmode="numeric"
+        >
+
+
+        <button
+            class="login-btn"
+            onclick="sendOTP()"
+        >
+            OTP મોકલો
+        </button>
+
+
+        <div
+            id="otpSection"
+            style="display:none;"
+        >
+
+            <input
+                type="text"
+                id="otp"
+                placeholder="OTP દાખલ કરો"
+                maxlength="4"
+                inputmode="numeric"
+            >
+
+
+            <button
+                class="login-btn"
+                onclick="verifyOTP()"
+            >
+                Login
+            </button>
+
+
+            <p>
+                Test OTP:
+                <b>1234</b>
+            </p>
+
+        </div>
+
+
+        <p
+            id="loginError"
+            style="
+            color:red;
+            font-weight:bold;
+            "
+        ></p>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================
+     DASHBOARD / SECOND SCREEN
+===================================== -->
+
+<div id="dashboard">
+
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <h2>
+            🏫 પ્રાથમિક શાળા નવા ટોઠીદરા
+        </h2>
+
+
+        <button
+            class="logout-btn"
+            onclick="logout()"
+        >
+            Logout
+        </button>
+
+    </div>
+
+
+
+    <div class="container">
+
+
+        <!-- =================================
+             5 KG ALERT
+        ================================== -->
+
+        <div
+            class="gas-alert"
+            id="gasAlert"
+        >
+
+            ⚠️ ⚠️ GAS ALERT ⚠️ ⚠️
+
+            <br>
+
+            🛢️
+
+            <span id="alertGasWeight">
+                5.0 KG
+            </span>
+
+            GAS બોટલમાં બાકી રહ્યું છે
+
+            <br>
+
+            🚨 હવે GAS BOOK કરો 🚨
+
+        </div>
+
+
+
+        <!-- =================================
+             INTERNET
+        ================================== -->
+
+        <div
+            id="internetStatus"
+            class="internet-status"
+        >
+            Internet Status Checking...
+        </div>
+
+
+
+        <!-- =================================
+             GAS WEIGHT
+        ================================== -->
+
+        <div class="card">
+
+            <h3>
+                ⚖️ Gas Cylinder Weight Status
+            </h3>
+
+
+            <div class="gas-status">
+
+
+                <div class="status-box">
+
+                    Net Gas
+
+                    <strong id="netWeight">
+                        5.0 KG
+                    </strong>
+
+                </div>
+
+
+                <div class="status-box">
+
+                    Tare Weight
+
+                    <strong>
+                        15.2 KG
+                    </strong>
+
+                </div>
+
+
+                <div class="status-box">
+
+                    Gross Weight
+
+                    <strong id="grossWeight">
+                        20.2 KG
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================
+             WEIGHT CHECK
+        ================================== -->
+
+        <div class="card">
+
+            <h3>
+                🧪 Gas Weight Check
+            </h3>
+
+
+            <input
+                type="number"
+                id="testWeight"
+                placeholder="Gas weight KG"
+                step="0.1"
+            >
+
+
+            <button
+                style="
+                background:#1976d2;
+                color:white;
+                "
+                onclick="calculateWeight()"
+            >
+                Weight Check
+            </button>
+
+
+            <p id="weightResult"></p>
+
+        </div>
+
+
+
+        <!-- =================================
+             AUTO BOOKING
+        ================================== -->
+
+        <div class="card">
+
+            <div class="auto-row">
+
+                <div>
+
+                    <h3>
+                        🤖 Auto Gas Booking
+                    </h3>
+
+                    <span id="autoStatus">
+                        Auto Booking OFF
+                    </span>
+
+                </div>
+
+
+                <div
+                    class="switch"
+                    id="autoSwitch"
+                    onclick="toggleAutoBooking()"
+                >
+
+                    <div class="switch-circle"></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================
+             GAS BOOKING
+        ================================== -->
+
+        <div class="card">
+
+            <h3>
+                🔥 Gas Booking
+            </h3>
+
+
+            <div class="booking-form">
+
+
+                <!-- COMPANY -->
+
+                <select
+                    id="selectedGasCompany"
+                    onchange="companyChanged()"
+                >
+
+                    <option value="">
+                        Gas Company પસંદ કરો
+                    </option>
+
+                    <option value="Indane Gas">
+                        🔴 Indane Gas
+                    </option>
+
+                    <option value="Bharat Gas">
+                        🔵 Bharat Gas
+                    </option>
+
+                    <option value="HP Gas">
+                        🟠 HP Gas
+                    </option>
+
+                </select>
+
+
+
+                <!-- SELECTED COMPANY -->
+
+                <div
+                    id="selectedCompanyBox"
+                    class="selected-company"
+                >
+                </div>
+
+
+
+                <!-- MOBILE -->
+
+                <input
+                    type="tel"
+                    id="bookingMobile"
+                    placeholder="10 અંકનો Mobile Number"
+                    maxlength="10"
+                    inputmode="numeric"
+                >
+
+
+
+                <!-- BOOK -->
+
+                <button
+                    id="mainBookingButton"
+                    class="booking-button"
+                    onclick="openGasBookingPage()"
+                >
+                    🔥 Gas Book કરો
+                </button>
+
+
+                <div
+                    id="bookingMessage"
+                    class="booking-message"
+                ></div>
+
+
+                <div class="offline-info">
+
+                    📵 Internet ન હોય તો પણ
+                    Booking History માં Entry સેવ થશે.
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================
+             LIVE HISTORY
+        ================================== -->
+
+        <div class="card">
+
+
+            <div class="history-header">
+
+                <h3 class="live-title">
+
+                    <span class="live-dot"></span>
+
+                    Booking Live History
+
+                </h3>
+
+
+                <button
+                    class="clear-btn"
+                    onclick="clearHistory()"
+                >
+                    🗑️ Clear History
+                </button>
+
+            </div>
+
+
+
+            <div class="history-table-wrapper">
+
+                <table class="history-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>No.</th>
+
+                            <th>Gas Company</th>
+
+                            <th>Mobile</th>
+
+                            <th>Date</th>
+
+                            <th>Time</th>
+
+                            <th>Booking ID</th>
+
+                            <th>Type</th>
+
+                            <th>Status</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="historyBody">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <div
+                id="emptyHistory"
+                class="empty-history"
+            >
+
+                હજુ સુધી કોઈ Gas Booking કરવામાં આવી નથી.
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================
+     NOTIFICATION
+===================================== -->
+
+<div
+    id="notification"
+    class="notification"
+></div>
+
+
+
+<script>
+
+
+/* =====================================
+   OFFICIAL GAS COMPANY LIVE PAGES
+===================================== */
+
+const gasCompanyLinks = {
+
+    "Indane Gas":
+        "https://cx.indianoil.in/",
+
+    "Bharat Gas":
+        "https://mylang.ebharatgas.com/QuickBook/BookAndPay?source=MB",
+
+    "HP Gas":
+        "https://myhpgas.in/myHPGas/Index.aspx"
+
+};
+
+
+
+/* =====================================
+   LOGIN - SEND OTP
+===================================== */
+
+function sendOTP(){
+
+    const mobile =
+        document.getElementById(
+            "mobile"
+        ).value.trim();
+
+
+    const error =
+        document.getElementById(
+            "loginError"
+        );
+
+
+    if(
+        !/^[0-9]{10}$/.test(mobile)
+    ){
+
+        error.innerText =
+            "⚠️ 10 અંકનો સાચો Mobile Number નાખો.";
+
+        return;
+
+    }
+
+
+    error.innerText = "";
+
+
+    document.getElementById(
+        "otpSection"
+    ).style.display =
+        "block";
+
+
+    showNotification(
+        "📱 OTP મોકલવામાં આવ્યો. Test OTP: 1234"
+    );
+
+}
+
+
+
+/* =====================================
+   VERIFY OTP
+===================================== */
+
+function verifyOTP(){
+
+    const otp =
+        document.getElementById(
+            "otp"
+        ).value.trim();
+
+
+    if(otp !== "1234"){
+
+        document.getElementById(
+            "loginError"
+        ).innerText =
+            "❌ OTP ખોટો છે. Test OTP: 1234";
+
+        return;
+
+    }
+
+
+    document.getElementById(
+        "loginPage"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "dashboard"
+    ).style.display =
+        "block";
+
+
+    updateInternetStatus();
+
+    loadHistory();
+
+}
+
+
+
+/* =====================================
+   LOGOUT
+===================================== */
+
+function logout(){
+
+    document.getElementById(
+        "dashboard"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "loginPage"
+    ).style.display =
+        "flex";
+
+
+    document.getElementById(
+        "otpSection"
+    ).style.display =
+        "none";
+
+}
+
+
+
+/* =====================================
+   WEIGHT CHECK
+===================================== */
+
+function calculateWeight(){
+
+    const weight =
+        parseFloat(
+            document.getElementById(
+                "testWeight"
+            ).value
+        );
+
+
+    const result =
+        document.getElementById(
+            "weightResult"
+        );
+
+
+    if(isNaN(weight)){
+
+        result.innerText =
+            "⚠️ Gas weight નાખો.";
+
+        result.style.color =
+            "red";
+
+        return;
+
+    }
+
+
+    const tare = 15.2;
+
+    const gross =
+        weight + tare;
+
+
+    document.getElementById(
+        "netWeight"
+    ).innerText =
+        weight.toFixed(1) + " KG";
+
+
+    document.getElementById(
+        "grossWeight"
+    ).innerText =
+        gross.toFixed(1) + " KG";
+
+
+    document.getElementById(
+        "alertGasWeight"
+    ).innerText =
+        weight.toFixed(1) + " KG";
+
+
+    result.innerText =
+        "Net Weight: " +
+        weight.toFixed(1) +
+        " KG | Gross Weight: " +
+        gross.toFixed(1) +
+        " KG";
+
+
+    result.style.color =
+        "#2e7d32";
+
+
+    /* ALERT WHEN 5 KG OR LESS */
+
+    if(weight <= 5){
+
+        document.getElementById(
+            "gasAlert"
+        ).style.display =
+            "block";
+
+    }else{
+
+        document.getElementById(
+            "gasAlert"
+        ).style.display =
+            "none";
+
+    }
+
+}
+
+
+
+/* =====================================
+   AUTO BOOKING
+===================================== */
+
+function toggleAutoBooking(){
+
+    const sw =
+        document.getElementById(
+            "autoSwitch"
+        );
+
+
+    const status =
+        document.getElementById(
+            "autoStatus"
+        );
+
+
+    sw.classList.toggle(
+        "active"
+    );
+
+
+    if(
+        sw.classList.contains(
+            "active"
+        )
+    ){
+
+        status.innerText =
+            "Auto Booking ON";
+
+
+        status.style.color =
+            "#2e7d32";
+
+
+        showNotification(
+            "🤖 Auto Gas Booking ON"
+        );
+
+    }else{
+
+        status.innerText =
+            "Auto Booking OFF";
+
+
+        status.style.color =
+            "#555";
+
+
+        showNotification(
+            "Auto Gas Booking OFF"
+        );
+
+    }
+
+}
+
+
+
+/* =====================================
+   COMPANY CHANGE
+===================================== */
+
+function companyChanged(){
+
+    const company =
+        document.getElementById(
+            "selectedGasCompany"
+        ).value;
+
+
+    const box =
+        document.getElementById(
+            "selectedCompanyBox"
+        );
+
+
+    const button =
+        document.getElementById(
+            "mainBookingButton"
+        );
+
+
+    if(company === ""){
+
+        box.style.display =
+            "none";
+
+
+        button.innerHTML =
+            "🔥 Gas Book કરો";
+
+
+        button.style.background =
+            "#1976d2";
+
+
+        return;
+
+    }
+
+
+    box.style.display =
+        "block";
+
+
+    if(company === "Indane Gas"){
+
+        box.innerHTML =
+            "🔴 Selected: INDANE GAS";
+
+
+        button.innerHTML =
+            "🔴 Indane Gas Book કરો";
+
+
+        button.style.background =
+            "#e53935";
+
+    }
+
+
+    if(company === "Bharat Gas"){
+
+        box.innerHTML =
+            "🔵 Selected: BHARAT GAS";
+
+
+        button.innerHTML =
+            "🔵 Bharat Gas Book કરો";
+
+
+        button.style.background =
+            "#1565c0";
+
+    }
+
+
+    if(company === "HP Gas"){
+
+        box.innerHTML =
+            "🟠 Selected: HP GAS";
+
+
+        button.innerHTML =
+            "🟠 HP Gas Book કરો";
+
+
+        button.style.background =
+            "#ef6c00";
+
+    }
+
+}
+
+
+
+/* =====================================
+   MAIN GAS BOOKING
+===================================== */
+
+function openGasBookingPage(){
+
+    const company =
+        document.getElementById(
+            "selectedGasCompany"
+        ).value;
+
+
+    const mobile =
+        document.getElementById(
+            "bookingMobile"
+        ).value.trim();
+
+
+    const message =
+        document.getElementById(
+            "bookingMessage"
+        );
+
+
+    /* COMPANY CHECK */
+
+    if(company === ""){
+
+        message.style.color =
+            "red";
+
+
+        message.innerHTML =
+            "⚠️ પહેલા Gas Company પસંદ કરો.";
+
+
+        return;
+
+    }
+
+
+    /* MOBILE CHECK */
+
+    if(
+        !/^[0-9]{10}$/.test(mobile)
+    ){
+
+        message.style.color =
+            "red";
+
+
+        message.innerHTML =
+            "⚠️ 10 અંકનો સાચો Mobile Number દાખલ કરો.";
+
+
+        return;
+
+    }
+
+
+    /* =================================
+       FIRST SAVE HISTORY
+    ================================= */
+
+    saveGasBookingHistory(
+        company,
+        mobile
+    );
+
+
+    /* =================================
+       MESSAGE
+    ================================= */
+
+    if(navigator.onLine){
+
+        message.style.color =
+            "green";
+
+
+        message.innerHTML =
+            "✅ " +
+            company +
+            " પસંદ થયું છે. Live Booking Page ખુલશે...";
+
+    }else{
+
+        message.style.color =
+            "#6a1b9a";
+
+
+        message.innerHTML =
+            "📵 Internet નથી. Offline Booking History માં સેવ થઈ ગઈ.";
+
+    }
+
+
+    /* =================================
+       OPEN COMPANY LIVE PAGE
+    ================================= */
+
+    if(navigator.onLine){
+
+        const livePage =
+            gasCompanyLinks[
+                company
+            ];
+
+
+        setTimeout(function(){
+
+            window.open(
+                livePage,
+                "_blank"
+            );
+
+        },500);
+
+    }
+
+}
+
+
+
+/* =====================================
+   SAVE BOOKING HISTORY
+===================================== */
+
+function saveGasBookingHistory(
+    company,
+    mobile
+){
+
+    let history =
+        JSON.parse(
+            localStorage.getItem(
+                "gasBookingHistory"
+            )
+        ) || [];
+
+
+    const now =
+        new Date();
+
+
+    const booking = {
+
+        company:
+            company,
+
+        mobile:
+            mobile,
+
+        date:
+            now.toLocaleDateString(
+                "en-IN"
+            ),
+
+        time:
+            now.toLocaleTimeString(
+                "en-IN"
+            ),
+
+        bookingID:
+            "GAS-" +
+            Date.now()
+                .toString()
+                .slice(-8),
+
+        type:
+            navigator.onLine
+                ? "Online"
+                : "Offline",
+
+        status:
+            navigator.onLine
+                ? "Live Page Opened"
+                : "Offline Saved"
+
+    };
+
+
+    /* NEWEST ENTRY FIRST */
+
+    history.unshift(
+        booking
+    );
+
+
+    /* KEEP MAX 200 */
+
+    if(history.length > 200){
+
+        history =
+            history.slice(
+                0,
+                200
+            );
+
+    }
+
+
+    localStorage.setItem(
+        "gasBookingHistory",
+        JSON.stringify(
+            history
+        )
+    );
+
+
+    /* IMMEDIATE HISTORY UPDATE */
+
+    loadHistory();
+
+}
+
+
+
+/* =====================================
+   LOAD HISTORY
+===================================== */
+
+function loadHistory(){
+
+    const body =
+        document.getElementById(
+            "historyBody"
+        );
+
+
+    const empty =
+        document.getElementById(
+            "emptyHistory"
+        );
+
+
+    if(!body){
+        return;
+    }
+
+
+    let history =
+        JSON.parse(
+            localStorage.getItem(
+                "gasBookingHistory"
+            )
+        ) || [];
+
+
+    body.innerHTML =
+        "";
+
+
+    if(history.length === 0){
+
+        empty.style.display =
+            "block";
+
+        return;
+
+    }
+
+
+    empty.style.display =
+        "none";
+
+
+    history.forEach(
+        function(item,index){
+
+            const row =
+                document.createElement(
+                    "tr"
+                );
+
+
+            const statusClass =
+                item.type === "Offline"
+                ? "offline-status"
+                : "online-status";
+
+
+            row.innerHTML = `
+
+                <td>
+                    ${index + 1}
+                </td>
+
+                <td>
+                    <strong>
+                        ${item.company}
+                    </strong>
+                </td>
+
+                <td>
+                    ${item.mobile}
+                </td>
+
+                <td>
+                    ${item.date}
+                </td>
+
+                <td>
+                    ${item.time}
+                </td>
+
+                <td>
+                    <strong>
+                        ${item.bookingID}
+                    </strong>
+                </td>
+
+                <td>
+                    ${item.type}
+                </td>
+
+                <td
+                    class="${statusClass}"
+                >
+                    ${item.status}
+                </td>
+
+            `;
+
+
+            body.appendChild(
+                row
+            );
+
+        }
+    );
+
+}
+
+
+
+/* =====================================
+   CLEAR HISTORY
+===================================== */
+
+function clearHistory(){
+
+    const history =
+        JSON.parse(
+            localStorage.getItem(
+                "gasBookingHistory"
+            )
+        ) || [];
+
+
+    if(history.length === 0){
+
+        showNotification(
+            "History પહેલેથી ખાલી છે."
+        );
+
+        return;
+
+    }
+
+
+    const confirmClear =
+        confirm(
+            "શું તમે બધી Booking History delete કરવા માંગો છો?"
+        );
+
+
+    if(!confirmClear){
+
+        return;
+
+    }
+
+
+    localStorage.removeItem(
+        "gasBookingHistory"
+    );
+
+
+    loadHistory();
+
+
+    showNotification(
+        "🗑️ Booking History Clear થઈ ગઈ."
+    );
+
+}
+
+
+
+/* =====================================
+   INTERNET STATUS
+===================================== */
+
+function updateInternetStatus(){
+
+    const box =
+        document.getElementById(
+            "internetStatus"
+        );
+
+
+    if(navigator.onLine){
+
+        box.className =
+            "internet-status online";
+
+
+        box.innerHTML =
+            "🟢 Internet Connected - Online Booking Available";
+
+    }else{
+
+        box.className =
+            "internet-status offline";
+
+
+        box.innerHTML =
+            "🔴 Internet નથી - Offline Booking Available";
+
+    }
+
+}
+
+
+window.addEventListener(
+    "online",
+    function(){
+
+        updateInternetStatus();
+
+        showNotification(
+            "🟢 Internet પાછું આવી ગયું."
+        );
+
+    }
+);
+
+
+window.addEventListener(
+    "offline",
+    function(){
+
+        updateInternetStatus();
+
+        showNotification(
+            "📵 Internet બંધ છે - Offline Booking ચાલુ છે."
+        );
+
+    }
+);
+
+
+
+/* =====================================
+   NOTIFICATION
+===================================== */
+
+function showNotification(
+    message
+){
+
+    const box =
+        document.getElementById(
+            "notification"
+        );
+
+
+    box.innerText =
+        message;
+
+
+    box.classList.add(
+        "show"
+    );
+
+
+    setTimeout(
+        function(){
+
+            box.classList.remove(
+                "show"
+            );
+
+        },
+        3000
+    );
+
+}
+
+
+
+/* =====================================
+   LIVE HISTORY AUTO REFRESH
+===================================== */
+
+setInterval(
+    function(){
+
+        if(
+            document.getElementById(
+                "dashboard"
+            ).style.display !==
+            "none"
+        ){
+
+            loadHistory();
+
+            updateInternetStatus();
+
+        }
+
+    },
+    2000
+);
+
+
+
+/* =====================================
+   PAGE LOAD
+===================================== */
+
+window.addEventListener(
+    "load",
+    function(){
+
+        loadHistory();
+
+        updateInternetStatus();
+
+    }
+);
+
+</script>
+
+</body>
+</html>
